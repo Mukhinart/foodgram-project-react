@@ -10,7 +10,7 @@ class BaseAdminSettings(admin.ModelAdmin):
     list_filter = ('author', 'name', 'tags')
 
 
-class IngredientRecipeInline(admin.TabularInline):
+class IngredientInRecipeInline(admin.TabularInline):
     """
     Параметры настроек админ зоны
     модели ингредиентов в рецепте.
@@ -21,7 +21,7 @@ class IngredientRecipeInline(admin.TabularInline):
 
 class TagAdmin(BaseAdminSettings):
     """
-    Кастомизация админ панели (управление тегам).
+    Кастомизация админ панели (управление тегами).
     """
     list_display = (
         'name',
@@ -53,22 +53,22 @@ class RecipeAdmin(BaseAdminSettings):
     list_display = (
         'name',
         'author',
-        'in_favorite'
+        'added_in_favorites'
     )
     list_display_links = ('name',)
     search_fields = ('name',)
     list_filter = ('author', 'name', 'tags')
-    readonly_fields = ('in_favorite',)
+    readonly_fields = ('added_in_favorites',)
     filter_horizontal = ('tags',)
-    inlines = (IngredientRecipeInline,)
+    inlines = (IngredientInRecipeInline,)
 
-    def in_favorite(self, obj):
-        return obj.in_favorite.all().count()
+    def added_in_favorites(self, obj):
+        return obj.favorites.all().count()
 
-    in_favorite.short_description = 'Количество добавлений в избранное'
+    added_in_favorites.short_description = 'Количество добавлений в избранное'
 
 
-class IngredientRecipeAdmin(admin.ModelAdmin):
+class IngredientInRecipeAdmin(admin.ModelAdmin):
     """
     Кастомизация админ панели (управление ингридиентами в рецептах).
     """
@@ -82,7 +82,7 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
 
 class FavoriteAdmin(admin.ModelAdmin):
     """
-    Кастомизация админ панели (управление избранных рецептов).
+    Кастомизация админ панели (управление избранными рецептами).
     """
     list_display = ('user', 'recipe')
     list_filter = ('user', 'recipe')
@@ -91,7 +91,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 
 class ShoppingCartAdmin(admin.ModelAdmin):
     """
-    Кастомизация админ панели (управление избранных рецептов).
+    Кастомизация админ панели (управление избранными рецептами).
     """
     list_display = ('recipe', 'user')
     list_filter = ('recipe', 'user')
@@ -101,6 +101,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(IngredientInRecipe, IngredientRecipeAdmin)
+admin.site.register(IngredientInRecipe, IngredientInRecipeAdmin)
 admin.site.register(Favorite, FavoriteAdmin)
 admin.site.register(ShoppingCart, ShoppingCartAdmin)

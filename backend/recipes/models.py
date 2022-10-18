@@ -58,6 +58,7 @@ class Recipe(models.Model):
     """
     author = models.ForeignKey(
         User,
+        related_name='recipes',
         on_delete=models.CASCADE,
         verbose_name='Автор рецепта'
     )
@@ -67,7 +68,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         blank=True,
-        verbose_name='Фото',
+        verbose_name='Изображение',
         upload_to='recipes/images'
     )
     text = models.TextField(
@@ -81,6 +82,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
+        related_name='recipes',
         verbose_name='Теги'
     )
     cooking_time = models.PositiveSmallIntegerField(
@@ -142,16 +144,17 @@ class IngredientInRecipe(models.Model):
 
 
 class Favorite(models.Model):
-    """Модель избранного"""
+    """Модель избранного."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='favorites',
         verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='in_favorite',
+        related_name='favorites',
         verbose_name='Рецепт',
     )
 
