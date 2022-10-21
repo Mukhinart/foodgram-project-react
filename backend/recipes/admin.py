@@ -10,15 +10,6 @@ class BaseAdminSettings(admin.ModelAdmin):
     list_filter = ('author', 'name', 'tags')
 
 
-class IngredientInRecipeInline(admin.TabularInline):
-    """
-    Параметры настроек админ зоны
-    модели ингредиентов в рецепте.
-    """
-    model = IngredientInRecipe
-    extra = 0
-
-
 class TagAdmin(BaseAdminSettings):
     """
     Кастомизация админ панели (управление тегами).
@@ -60,7 +51,6 @@ class RecipeAdmin(BaseAdminSettings):
     list_filter = ('author', 'name', 'tags')
     readonly_fields = ('added_in_favorites',)
     filter_horizontal = ('tags',)
-    inlines = (IngredientInRecipeInline,)
 
     def added_in_favorites(self, obj):
         return obj.favorites.all().count()
@@ -73,11 +63,10 @@ class IngredientInRecipeAdmin(admin.ModelAdmin):
     Кастомизация админ панели (управление ингридиентами в рецептах).
     """
     list_display = (
-        'recipe',
         'ingredient',
         'amount',
     )
-    list_filter = ('recipe', 'ingredient')
+    list_filter = ('ingredient',)
 
 
 class FavoriteAdmin(admin.ModelAdmin):

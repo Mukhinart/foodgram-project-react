@@ -16,6 +16,8 @@ class Tag(models.Model):
     )
     color = ColorField(
         format='hex',
+        default='#778899',
+        unique=True,
         verbose_name='Цвет в HEX'
     )
     slug = models.SlugField(
@@ -52,6 +54,39 @@ class Ingredient(models.Model):
         return f'{self.name}, {self.measurement_unit}'
 
 
+class IngredientInRecipe(models.Model):
+    """Модель количества ингридиентов в рецепте."""
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        related_name='ingredient_list',
+        verbose_name='Ингредиенты в рецепте',
+    )
+    amount = models.IntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1, 'Минимальное значение - 1')
+        ],
+        verbose_name='Количество ингредиента'
+    )
+
+    class Meta:
+        default_related_name = 'ingridients_recipe'
+        constraints = [
+            UniqueConstraint(
+                fields=('ingredient', 'amount'),
+                name='unique_ingredient_in_recipe'),
+            CheckConstraint(
+                check=models.Q(amount__gte=1),
+                name='amount_gte_1'),
+        ]
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецепте'
+
+    def __str__(self):
+        return f'{self.ingredient} – {self.amount}'
+
+
 class Recipe(models.Model):
     """
     Модель рецепта.
@@ -64,7 +99,8 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         verbose_name='Название рецепта',
-        max_length=200
+        max_length=200,
+        db_index=True
     )
     image = models.ImageField(
         blank=True,
@@ -75,8 +111,7 @@ class Recipe(models.Model):
         verbose_name='Описание рецепта'
     )
     ingredients = models.ManyToManyField(
-        Ingredient,
-        through='IngredientInRecipe',
+        IngredientInRecipe,
         related_name='recipes',
         verbose_name='Ингредиенты в рецепте'
     )
@@ -103,44 +138,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class IngredientInRecipe(models.Model):
-    """Модель количества ингридиентов в рецепте."""
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='ingredient_list',
-        verbose_name='Рецепт',
-    )
-    ingredient = models.ForeignKey(
-        Ingredient,
-        on_delete=models.CASCADE,
-        verbose_name='Ингредиенты в рецепте',
-    )
-    amount = models.IntegerField(
-        default=1,
-        validators=[
-            MinValueValidator(1, 'Минимальное значение - 1')
-        ],
-        verbose_name='Количество ингредиента'
-    )
-
-    class Meta:
-        default_related_name = 'ingridients_recipe'
-        constraints = [
-            UniqueConstraint(
-                fields=('recipe', 'ingredient',),
-                name='recipe_ingredient_exists'),
-            CheckConstraint(
-                check=models.Q(amount__gte=1),
-                name='amount_gte_1'),
-        ]
-        verbose_name = 'Ингредиент в рецепте'
-        verbose_name_plural = 'Ингредиенты в рецепте'
-
-    def __str__(self):
-        return f'{self.recipe}: {self.ingredient} – {self.amount}'
 
 
 class Favorite(models.Model):
