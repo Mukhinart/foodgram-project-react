@@ -15,16 +15,14 @@ services:
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-      - redoc:/app/api/docs/
+      # - redoc:/app/api/docs/
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
 
   frontend:
-    build:
-      context: mukhinart/foodgram-frontend:latest
-      dockerfile: Dockerfile
+    image: mukhinart/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
 
@@ -39,6 +37,7 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/static
       - media_value:/var/html/media
+      # - redoc:/usr/share/nginx/html/api/docs/
     depends_on:
       - backend
       - frontend
@@ -47,3 +46,4 @@ volumes:
   static_value:
   media_value:
   postgres_data:
+ # redoc:
