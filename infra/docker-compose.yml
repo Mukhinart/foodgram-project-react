@@ -9,17 +9,17 @@ services:
       - ./.env
     restart: always
 
-    backend:
-      image: mukhinart/foodgram-backend:latest
-      restart: always
-      volumes:
-        - static_value:/app/static/
-        - media_value:/app/media/
-        - redoc:/app/api/docs/
-      depends_on:
-        - db
-      env_file:
-        - ../backend/foodgram/.env
+  backend:
+    image: mukhinart/foodgram-backend:latest
+    restart: always
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media/
+      - redoc:/app/api/docs/
+    depends_on:
+      - db
+    env_file:
+      - ../backend/foodgram/.env
 
   frontend:
     build:
