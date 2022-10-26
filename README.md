@@ -2,6 +2,8 @@
 
 **Foodgram** - продуктовый помощник.
 
+[![Django-app workflow](https://github.com/Mukhinart/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/Mukhinart/foodgram-project-react/actions/workflows/main.yml)
+
 Пользователи **Foodgram** могут публиковать рецепты (**Recipes**), подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать в формате .txt сводный список продуктов (**Ingredients**), необходимых для приготовления одного или нескольких выбранных блюд.
 
 Для удобства навигации по сайту рецепты размечены тэгами (**Tags**)
