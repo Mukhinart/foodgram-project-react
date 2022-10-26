@@ -68,19 +68,19 @@ docker-compose up -d --build
 - Выполните миграции:
 
 ```sh
-docker-compose exec web python manage.py migrate
+docker-compose exec backend python manage.py migrate
 ```
 
 - Создайте суперпользователя:
 
 ```sh
-docker-compose exec web python manage.py createsuperuser
+docker-compose exec backend python manage.py createsuperuser
 ```
 
 - Выполните команду для сбора статики:
 
 ```sh
-docker-compose exec web python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py collectstatic --no-input
 ```
 
 - Команда для заполнения тестовыми данными:
