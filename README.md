@@ -18,17 +18,38 @@
 ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-### Ссылка для установки Docker:
-
-[Docker](https://docs.docker.com/engine/install/)
-
-### Инструкция по запуску проекта для Windows:
+### Инструкция для разворачивания проекта на удаленном сервере:
 
 - Склонируйте проект из репозитория:
 
 ```sh
 $ git clone https://github.com/Mukhinart/foodgram-project-react.git
 ```
+
+- Выполните вход на удаленный сервер
+
+- Установите DOCKER на сервер:
+```sh
+apt install docker.io 
+```
+
+- Установитe docker-compose на сервер:
+```sh
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+```
+
+- Отредактируйте конфигурацию сервера NGNIX:
+```sh
+Локально измените файл ..infra/nginx.conf - замените данные в строке server_name на IP-адрес удаленного сервера
+```
+
+- Скопируйте файлы docker-compose.yml и nginx.conf из директории ../infra/ на удаленный сервер:
+```sh
+scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yaml
+scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+```
+- Создайте переменные окружения (указаны в файле ../infra/env.example) и добавьте их в Secrets GitHub Actions
 
 - Установите и активируйте виртуальное окружение (для Windows):
 
@@ -37,13 +58,6 @@ python -m venv venv
 source venv/Scripts/activate
 python -m pip install --upgrade pip
 ``` 
-
-- Установите зависимости из файла requirements.txt:
-
-```sh
-pip install -r requirements.txt
-``` 
-- **Для запуска следующих команд перейдите в папку** ```...foodgram-project-react/infra/```
 
 - Запустите приложение в контейнерах:
 
@@ -74,13 +88,40 @@ docker-compose exec web python manage.py collectstatic --no-input
 cd backend && python manage.py load_ingredients
 ```
 
-- Добавьте теги для для рецептов через админ-панель проекта [http://localhost/admin/](http://localhost/admin/), т.к. это поле является обязательным для сохранения рецепта и добавляется только админом.
-
-### Команда для остановки приложения в контейнере:
+- Команда для остановки приложения в контейнерах:
 
 ```sh
 docker-compose down -v
 ```
+
+### Для запуска на локальной машине:
+
+- Склонируйте проект из репозитория:
+
+```sh
+$ git clone https://github.com/Mukhinart/foodgram-project-react.git
+```
+
+- В папке ../infra/ переименуйте файл example.env в .env и заполните своими данными:
+```
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=<...> # секретный ключ django-проекта из settings.py
+```
+
+- Создайте и запустите контейнеры Docker (по инструкции выше).
+
+После запуска проект будут доступен по адресу: [http://localhost/](http://localhost/)
+
+Документация будет доступна по адресу: [http://localhost/api/docs/](http://localhost/api/docs/)
+
+### Особенности заполнения данными:
+
+- Добавьте теги для для рецептов через админ-панель проекта [http://localhost/admin/](http://localhost/admin/), т.к. это поле является обязательным для сохранения рецепта и добавляется только админом.
 
 ***
 
@@ -392,4 +433,3 @@ POST /api/v1/titles/
 ### Автор
 
 Артём Мухин
-
