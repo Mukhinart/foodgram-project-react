@@ -18,7 +18,7 @@ class Tag(models.Model):
         format='hex',
         default='#778899',
         unique=True,
-        verbose_name='Цвет в HEX'
+        verbose_name='Цвет в формате HEX'
     )
     slug = models.SlugField(
         max_length=200,
