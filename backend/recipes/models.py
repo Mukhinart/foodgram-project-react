@@ -2,7 +2,7 @@ from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import CheckConstraint, UniqueConstraint
+from django.db.models import UniqueConstraint
 
 User = get_user_model()
 
@@ -76,9 +76,6 @@ class IngredientInRecipe(models.Model):
             UniqueConstraint(
                 fields=('ingredient', 'amount'),
                 name='unique_ingredient_in_recipe'),
-            CheckConstraint(
-                check=models.Q(amount__gte=1),
-                name='amount_gte_1'),
         ]
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'

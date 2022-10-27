@@ -32,8 +32,8 @@ class IngredientAdmin(BaseAdminSettings):
         'name',
         'measurement_unit'
     )
-    list_display_links = ('name',)
-    search_fields = ('name',)
+    # list_display_links = ('name',)
+    # search_fields = ('name',)
     list_filter = ('name',)
 
 
