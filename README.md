@@ -85,7 +85,7 @@ docker-compose exec backend python manage.py collectstatic --no-input
 
 - Команда для заполнения тестовыми данными:
 ```sh
-cd backend && python manage.py load_ingredients
+docker-compose exec backend python manage.py load_ingredients
 ```
 
 - Команда для остановки приложения в контейнерах:
