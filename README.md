@@ -365,7 +365,7 @@ GET /api/ingredients/?name=абри
 
 #### Пример POST-запроса:
 ```
-POST /api/v1/titles/
+POST /api/recipes/
 ```
 Авторизация по токену.
 Запрос от имени пользователя должен выполняться с заголовком "Authorization: Token TOKENVALUE"
@@ -429,6 +429,16 @@ POST /api/v1/titles/
 Документация будет доступна по адресу: [http://localhost/api/docs/](http://localhost/api/docs/)
 
 ***
+
+Проект развернут по IP [178.154.203.148](http://178.154.203.148/)
+
+Доступ в админ-панель:
+
+```sh
+http://178.154.203.148/admin
+login: admin (admin@food.food)
+pass: admin123
+```
 
 ### Автор
 
